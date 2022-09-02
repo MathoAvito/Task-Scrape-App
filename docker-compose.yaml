@@ -1,0 +1,18 @@
+services: 
+    server:
+      container_name: task-scrape-back
+      restart: always
+      build: 
+        context: .
+        dockerfile: Dockerfile.back
+
+    nginx:
+      container_name: task-scrape-front
+      restart: always
+      depends_on:
+        - server
+      build: 
+        context: .
+        dockerfile: Dockerfile.front
+      ports:
+        - "80:80"
