@@ -3,7 +3,6 @@ from sqlalchemy.sql import func
 import flask_sqlalchemy
 db = flask_sqlalchemy.SQLAlchemy()
 
-
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.String(10000))

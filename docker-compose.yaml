@@ -1,46 +1,42 @@
 services: 
+
+# *-*-*-*-*-*-*-*-*-*-*-*   App   *-*-*-*-*-*-*-*-*-*-*-*
     server:
       container_name: task-scrape-back
       restart: always
       build: 
         context: .
         dockerfile: Dockerfile.back
-      ports:
-        - 5000:5000
+      env_file: ./website/database.env
       depends_on:
         database:
           condition: service_healthy
-      
-
-
-    database:
-      container_name: postgres
-      image: postgres:latest
-      env_file: ./website/database.env
       ports:
-        - 5432:5432
-      volumes:
-        - db_volume:/var/lib/postgresql
+        - 5000:5000
 
+
+# *-*-*-*-*-*-*-*-*-*-*   Database   *-*-*-*-*-*-*-*-*-*-*
+    database:
+      container_name: mysql
+      image: mysql:5.7
+      env_file: ./website/database.env
       healthcheck:
-        test: ["CMD-SHELL", "pg_isready"]
-        interval: 10s
-        timeout: 5s
-        retries: 5
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        timeout: 20s
+        retries: 10
 
 
-
-
-    # nginx:
-    #   container_name: task-scrape-front
-    #   restart: always
-    #   depends_on:
-    #     - server
-    #   build: 
-    #     context: .
-    #     dockerfile: Dockerfile.front
-    #   ports:
-    #     - "80:80"
+# *-*-*-*-*-*-*-*-*-*-*   Nginx   *-*-*-*-*-*-*-*-*-*-*
+    nginx:
+      container_name: task-scrape-front
+      restart: always
+      depends_on:
+        - server
+      build: 
+        context: .
+        dockerfile: Dockerfile.front
+      ports:
+        - "80:80"
       
 volumes:
   db_volume:

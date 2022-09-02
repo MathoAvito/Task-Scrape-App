@@ -1,9 +1,9 @@
 import os
 
-user = os.environ.get('POSTGRES_USER')
-password = os.environ.get('POSTGRES_PASSWORD')
-host = os.environ.get('POSTGRES_HOST')
-database = os.environ.get('POSTGRES_DB')
-port = os.environ.get('POSTGRES_PORT')
+user = os.environ.get('MYSQL_USER')
+password = os.environ.get('MYSQL_ROOT_PASSWORD')
+host = os.environ.get('MYSQL_HOST')
+database = os.environ.get('MYSQL_DATABASE')
+port = 3306
 
-DATABASE_CONNECTION_URI = f'postgresql+psycopg2://{user}:{password}@{host}:{port}/{database}'
+DATABASE_CONNECTION_URI = f'mysql+pymysql://{user}:{password}@{host}:{port}/{database}'
