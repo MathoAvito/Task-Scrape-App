@@ -1,4 +1,4 @@
-FROM python:3.10 as builder
+FROM python:3.10 as base
 
 COPY . /app
 
@@ -8,9 +8,9 @@ RUN pip install --upgrade pip
 
 RUN pip install --no-cache -r requirements.txt
 
-FROM builder as final
+FROM base as final
 
-COPY --from=builder app app
+COPY --from=base app app
 
 WORKDIR /app
 

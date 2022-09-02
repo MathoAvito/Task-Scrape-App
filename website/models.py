@@ -1,6 +1,7 @@
-from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
+import flask_sqlalchemy
+db = flask_sqlalchemy.SQLAlchemy()
 
 
 class Note(db.Model):

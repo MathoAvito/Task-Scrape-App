@@ -1,3 +1,5 @@
 flask==2.2.2
 Flask-SQLAlchemy==2.5.1
 flask-login==0.6.2
+psycopg2-binary
+gunicorn

@@ -5,14 +5,42 @@ services:
       build: 
         context: .
         dockerfile: Dockerfile.back
-
-    nginx:
-      container_name: task-scrape-front
-      restart: always
-      depends_on:
-        - server
-      build: 
-        context: .
-        dockerfile: Dockerfile.front
       ports:
-        - "80:80"
+        - 5000:5000
+      depends_on:
+        database:
+          condition: service_healthy
+      
+
+
+    database:
+      container_name: postgres
+      image: postgres:latest
+      env_file: ./website/database.env
+      ports:
+        - 5432:5432
+      volumes:
+        - db_volume:/var/lib/postgresql
+
+      healthcheck:
+        test: ["CMD-SHELL", "pg_isready"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+
+
+
+
+    # nginx:
+    #   container_name: task-scrape-front
+    #   restart: always
+    #   depends_on:
+    #     - server
+    #   build: 
+    #     context: .
+    #     dockerfile: Dockerfile.front
+    #   ports:
+    #     - "80:80"
+      
+volumes:
+  db_volume:
