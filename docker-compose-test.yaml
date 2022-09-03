@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # *-*-*-*-*-*-*-*-*-*   App   *-*-*-*-*-*-*-*-*-*
+  server:
+    container_name: task-scrape-back
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.back
+    env_file: ./website/database.env
+    depends_on:
+      database:
+        condition: service_healthy
+
+  # *-*-*-*-*-*-*-*-*   Database   *-*-*-*-*-*-*-*-*
+  database:
+    container_name: mysql
+    image: mysql:5.7
+    env_file: ./website/database.env
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 20s
+      retries: 10
+
+  # *-*-*-*-*-*-*-*-*   Frontend   *-*-*-*-*-*-*-*-*
+  frontent:
+    container_name: task-scrape-front
+    restart: always
+    depends_on:
+      - server
+    build:
+      context: .
+      dockerfile: Dockerfile.front
+    ports:
+      - 80:80
+
+networks:
+  default:
+    name: test-network
+    external: true
