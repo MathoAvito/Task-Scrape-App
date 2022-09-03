@@ -3,7 +3,7 @@ pipeline {
    
    environment {
     ECR_REPO = '644435390668.dkr.ecr.eu-west-1.amazonaws.com'
-    REPO_NAME = 'matan-natours-portfolio'
+    REPO_NAME = 'matan-task-scrape-portfolio'
    }
 
    stages {
@@ -14,7 +14,7 @@ pipeline {
             echo "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-"
 
             script {
-               withCredentials([file(credentialsId: 'natours-config', variable: 'config')]) { // app's config file added directly to jenkins and copied to workspace
+               withCredentials([file(credentialsId: 'task-scrape-config', variable: 'config')]) { // app's config file added directly to jenkins and copied to workspace
                   sh 'cp $config config.env || (rm -f config.env && cp $config config.env)'
                }
                sh "docker-compose -f docker-compose-test.yaml build"
@@ -40,9 +40,9 @@ pipeline {
                     echo "test failed, exit ..."
                     echo "=======================\nLOGS\n======================="
                     echo "\n=======================\nFRONTEND\n======================="
-                    docker logs natours-front
+                    docker logs task-scrape-front
                     echo "\n=======================\nBACKEND\n======================="
-                    docker logs natours-back
+                    docker logs task-scrape-back
                     exit 1
                   fi
                 done
@@ -55,7 +55,7 @@ pipeline {
          when { expression { env.GIT_BRANCH == 'main' } }
          steps {
             sshagent(credentials: ['github_jenkins']) {
-               sh 'git clone git@github.com:MathoAvito/natours-infra.git .'
+               sh 'git clone git@github.com:MathoAvito/Task-Scrape-Infra.git .'
             }
          }
       }
@@ -115,7 +115,7 @@ pipeline {
          from: '${env.DEFAULT_FROM_EMAIL}'
 
 //   ############## Cleaning ##############
-      sh 'docker rm -f natours-back natours-front'
+      sh 'docker rm -f task-scrape-front task-scrape-back'
       sh "docker network disconnect test-network ${HOSTNAME}"
       sh 'docker network rm test-network'
       cleanWs()
