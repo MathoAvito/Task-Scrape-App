@@ -1,42 +1,40 @@
 services: 
 
-# *-*-*-*-*-*-*-*-*-*-*-*   App   *-*-*-*-*-*-*-*-*-*-*-*
-    server:
-      container_name: task-scrape-back
-      restart: always
-      build: 
-        context: .
-        dockerfile: Dockerfile.back
-      env_file: ./website/database.env
-      depends_on:
-        database:
-          condition: service_healthy
-      ports:
-        - 5000:5000
+# *-*-*-*-*-*-*-*-*-*   App   *-*-*-*-*-*-*-*-*-*
+  server:
+    container_name: task-scrape-back
+    restart: always
+    build: 
+      context: .
+      dockerfile: Dockerfile.back
+    env_file: ./website/database.env
+    depends_on:
+      database:
+        condition: service_healthy
 
 
-# *-*-*-*-*-*-*-*-*-*-*   Database   *-*-*-*-*-*-*-*-*-*-*
-    database:
-      container_name: mysql
-      image: mysql:5.7
-      env_file: ./website/database.env
-      healthcheck:
-        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-        timeout: 20s
-        retries: 10
+# *-*-*-*-*-*-*-*-*   Database   *-*-*-*-*-*-*-*-*
+  database:
+    container_name: mysql
+    image: mysql:5.7
+    env_file: ./website/database.env
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
 
-# *-*-*-*-*-*-*-*-*-*-*   Nginx   *-*-*-*-*-*-*-*-*-*-*
-    nginx:
-      container_name: task-scrape-front
-      restart: always
-      depends_on:
-        - server
-      build: 
-        context: .
-        dockerfile: Dockerfile.front
-      ports:
-        - "80:80"
-      
+# *-*-*-*-*-*-*-*-*   Nginx   *-*-*-*-*-*-*-*-*
+  nginx:
+    container_name: task-scrape-front
+    restart: always
+    depends_on:
+      - server
+    build: 
+      context: .
+      dockerfile: Dockerfile.front
+    ports:
+      - "80:80"
+    
 volumes:
   db_volume:

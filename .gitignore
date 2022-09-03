@@ -12,7 +12,10 @@ build/
 *.egg
 *.egg-info/
 .tox/
-.cache/
+.cache/￼ portfolio-task_scrape_app
+Add description
+￼Disable Multibranch Pipeline
+
 .pytest_cache/
 .idea/
 docs/_build/

@@ -24,7 +24,7 @@ def home():
     return render_template("home.html", user=current_user)
 
 
-@views.route('/delete-note', methods=['POST'])
+@views.route('/delete-note', methods=['DELETE'])
 def delete_note():
     note = json.loads(request.data)
     noteId = note['noteId']
