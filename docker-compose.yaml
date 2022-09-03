@@ -1,5 +1,6 @@
-services: 
+version: '3.8'
 
+services: 
 # *-*-*-*-*-*-*-*-*-*   App   *-*-*-*-*-*-*-*-*-*
   server:
     container_name: task-scrape-back
@@ -34,7 +35,5 @@ services:
       context: .
       dockerfile: Dockerfile.front
     ports:
-      - "80:80"
-    
-volumes:
-  db_volume:
+      - 80:80
+  
