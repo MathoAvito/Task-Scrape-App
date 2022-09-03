@@ -21,6 +21,7 @@ services:
     env_file: ./website/database.env
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 5s
       timeout: 3s
       retries: 10
 
