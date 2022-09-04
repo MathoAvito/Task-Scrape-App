@@ -15,7 +15,7 @@ pipeline {
 
             script {
                withCredentials([file(credentialsId: 'task-scrape-config', variable: 'config')]) { // app's config file added directly to jenkins and copied to workspace
-                  sh 'cp $config config.env || (rm -f config.env && cp $config config.env)'
+                  sh 'cp $config ./website/database.env || (rm -f ./website/database.env && cp $config ./website/database.env)'
                }
                sh "docker-compose -f docker-compose-test.yaml build"
             }
