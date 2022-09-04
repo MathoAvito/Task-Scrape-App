@@ -25,7 +25,7 @@ services:
       retries: 10
 
   # *-*-*-*-*-*-*-*-*   Frontend   *-*-*-*-*-*-*-*-*
-  frontent:
+  frontend:
     container_name: task-scrape-front
     restart: always
     depends_on:
