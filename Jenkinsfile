@@ -29,7 +29,7 @@ pipeline {
             echo "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*"
 
             sh 'docker network create test-network || true'
-            sh "docker network connect test-network ${HOSTNAME}"
+            sh "docker network connect test-network ${HOSTNAME}" //  connect Jenkin's container to the test network
             sh "docker-compose -f docker-compose-test.yaml up -d --build"
             sh '''#!/bin/bash
                 COUNT=0
