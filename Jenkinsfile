@@ -37,13 +37,15 @@ pipeline {
                   COUNT=$((COUNT + 1))
                   sleep 5
                   if [[ COUNT -eq 10 ]]; then
-                    echo "test failed, exit ..."
-                    echo "=======================\nLOGS\n======================="
-                    echo "\n=======================\nFRONTEND\n======================="
-                    docker logs task-scrape-front
-                    echo "\n=======================\nBACKEND\n======================="
-                    docker logs task-scrape-back
-                    exit 1
+                     echo "test failed, exit ..."
+                     echo "*-*-*-*-*-*-*-*-*-*-*-*-*\nLOGS\n*-*-*-*-*-*-*-*-*-*-*-*-*"
+                     echo "\n=======================\nFRONTEND\n======================="
+                     docker logs task-scrape-front
+                     echo "===========================================================\n"
+                     echo "\n=======================\nBACKEND\n======================="
+                     docker logs task-scrape-back
+                     echo "==========================================================="
+                     exit 1
                   fi
                 done
                 '''
