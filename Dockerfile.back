@@ -1,4 +1,4 @@
-FROM python:3.10 as base
+FROM python:3.10.0-alpine as base
 
 COPY . /app
 
@@ -8,7 +8,7 @@ RUN pip install --upgrade pip
 
 RUN pip install --no-cache -r requirements.txt
 
-FROM python:3.10.0-alpine as final
+FROM base as final
 
 COPY --from=base app app
 
