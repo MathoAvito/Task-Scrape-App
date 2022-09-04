@@ -8,7 +8,7 @@ RUN pip install --upgrade pip
 
 RUN pip install --no-cache -r requirements.txt
 
-FROM base as final
+FROM python:3.10.0-alpine as final
 
 COPY --from=base app app
 
