@@ -33,7 +33,7 @@ pipeline {
             sh "docker-compose -f docker-compose-test.yaml up -d --build"
             sh '''#!/bin/bash
                 COUNT=0
-                until $(curl --output /dev/null --silent --head --fail http://task-scrape-front); do
+                until $(curl --output /dev/null --silent --head --fail http://frontend); do
                   COUNT=$((COUNT + 1))
                   sleep 5
                   if [[ COUNT -eq 10 ]]; then
@@ -120,7 +120,7 @@ pipeline {
          from: '${env.DEFAULT_FROM_EMAIL}'
 
 //   ############## Cleaning ##############
-      sh 'docker rm -f task-scrape-front task-scrape-back'
+      sh 'docker rm -f task-scrape-front task-scrape-back mysql'
       sh "docker network disconnect test-network ${HOSTNAME}"
       sh 'docker network rm test-network'
       cleanWs()
