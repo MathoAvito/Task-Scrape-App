@@ -33,7 +33,7 @@ pipeline {
             sh "docker-compose -f docker-compose-test.yaml up -d --build"
             sh '''#!/bin/bash
                 COUNT=0
-                until $(curl --output /dev/null --silent --head --fail frontend:80); do
+                until $(curl --output /dev/null --silent --head --fail http://task-scrape-front); do
                   COUNT=$((COUNT + 1))
                   sleep 5
                   if [[ COUNT -eq 10 ]]; then
