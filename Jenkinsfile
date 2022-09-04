@@ -2,7 +2,7 @@ pipeline {
    agent any
    
    environment {
-    ECR_REPO = '644435390668.dkr.ecr.eu-west-1.amazonaws.com'
+    ECR_URL = '644435390668.dkr.ecr.eu-west-1.amazonaws.com'
     REPO_NAME = 'matan-task-scrape-portfolio'
    }
 
@@ -47,6 +47,9 @@ pipeline {
                   fi
                 done
                 '''
+                // make 10 tries to curl, check that the app is running.
+                // if it fails, print the logs of the two containers (front&back)
+
             cleanWs() // Remove working directory as we need to clone and modify infrastructure repo
          }
       }
@@ -76,13 +79,13 @@ pipeline {
         steps {
           script {
             sh "aws ecr get-login-password --region eu-west-1 | \
-                docker login --username AWS --password-stdin ${ECR_REPO}"
+                docker login --username AWS --password-stdin ${ECR_URL}"
 
-            sh "docker tag backend:latest ${ECR_REPO}/${REPO_NAME}:backend-${NEXT_TAG}"
-            sh "docker push ${ECR_REPO}/${REPO_NAME}:backend-${NEXT_TAG}"
+            sh "docker tag backend:latest ${ECR_URL}/${REPO_NAME}:backend-${NEXT_TAG}"
+            sh "docker push ${ECR_URL}/${REPO_NAME}:backend-${NEXT_TAG}"
 
-            sh "docker tag frontend:latest ${ECR_REPO}/${REPO_NAME}:frontend-${NEXT_TAG}"
-            sh "docker push ${ECR_REPO}/${REPO_NAME}:frontend-${NEXT_TAG}"
+            sh "docker tag frontend:latest ${ECR_URL}/${REPO_NAME}:frontend-${NEXT_TAG}"
+            sh "docker push ${ECR_URL}/${REPO_NAME}:frontend-${NEXT_TAG}"
            }
         }
       }
@@ -102,7 +105,7 @@ pipeline {
                }
             }
          }
-      }   
+      }
    }
 
    post {
