@@ -101,7 +101,7 @@ pipeline {
                         git config user.email ${env.GIT_COMMITTER_EMAIL}
                         git config user.name ${env.GIT_COMMITTER_NAME}
                         git add Chart.yaml
-                        git commit -am"Done by Jenkins job: ${BUILD_NUMBER}"
+                        git commit -am"Done by Jenkins, build number ${BUILD_NUMBER}"
                         git push
                      """
                }
