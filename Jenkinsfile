@@ -120,7 +120,7 @@ pipeline {
          from: '${env.DEFAULT_FROM_EMAIL}'
 
 //   ############## Cleaning ##############
-      sh 'docker rm -f task-scrape-front task-scrape-back mysql'
+      sh 'docker rm -f task-scrape-front task-scrape-back mysql-headless'
       sh "docker network disconnect test-network ${HOSTNAME}"
       sh 'docker network rm test-network'
       sh 'docker system prune --all -f'
