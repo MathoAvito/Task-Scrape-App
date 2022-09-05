@@ -14,8 +14,11 @@ def create_app():
     app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
 
     from .models import User, Note
-
-    db.init_app(app)
+    import time
+    try:
+        db.init_app(app)
+    except:
+        time.sleep(1000000) #for debugging
 
     from .views import views
     from .auth import auth
