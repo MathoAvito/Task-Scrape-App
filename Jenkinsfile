@@ -18,6 +18,8 @@ pipeline {
                   sh 'cp $config ./website/database.env || (rm -f ./website/database.env && cp $config ./website/database.env)'
                }
                sh "docker-compose -f docker-compose-test.yaml build"
+               sh "docker image ls"
+               sh "exit 1"
             }
          }
       }
