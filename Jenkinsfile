@@ -60,7 +60,7 @@ pipeline {
          when { expression { env.GIT_BRANCH == 'main' } }
          steps {
             sshagent(credentials: ['github_jenkins']) {
-               sh 'git clone git@github.com:MathoAvito/Task-Scrape-Infra.git .'
+               sh 'git clone git@github.com:MathoAvito/Task-Scrape-GitOps-App.git .'
             }
          }
       }
