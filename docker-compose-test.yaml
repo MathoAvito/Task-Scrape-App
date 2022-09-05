@@ -1,8 +1,10 @@
+version: '3.8'
 
 services:
   # *-*-*-*-*-*-*-*-*-*   App   *-*-*-*-*-*-*-*-*-*
   server:
     container_name: task-scrape-back
+    image: task-scrape-back
     restart: always
     build:
       context: .
@@ -26,6 +28,7 @@ services:
   # *-*-*-*-*-*-*-*-*   Frontend   *-*-*-*-*-*-*-*-*
   frontend:
     container_name: task-scrape-front
+    image: task-scrape-front
     restart: always
     depends_on:
       - server
