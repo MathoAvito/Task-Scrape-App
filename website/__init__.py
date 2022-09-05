@@ -15,10 +15,8 @@ def create_app():
 
     from .models import User, Note
     import time
-    try:
-        db.init_app(app)
-    except:
-        time.sleep(1000000) #for debugging
+    time.sleep(19999999)
+    db.init_app(app)
 
     from .views import views
     from .auth import auth
