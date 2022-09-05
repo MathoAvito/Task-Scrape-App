@@ -123,6 +123,7 @@ pipeline {
       sh 'docker rm -f task-scrape-front task-scrape-back mysql'
       sh "docker network disconnect test-network ${HOSTNAME}"
       sh 'docker network rm test-network'
+      sh 'docker system prune --all -f'
       cleanWs()
     }
   }
