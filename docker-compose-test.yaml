@@ -11,12 +11,12 @@ services:
       dockerfile: Dockerfile.back
     env_file: ./website/database.env
     depends_on:
-      database:
+      mysql-headless:
         condition: service_healthy
 
   # *-*-*-*-*-*-*-*-*   Database   *-*-*-*-*-*-*-*-*
-  database:
-    container_name: mysql
+  mysql-headless:
+    container_name: mysql-headless
     image: mysql:5.7
     env_file: ./website/database.env
     healthcheck:
