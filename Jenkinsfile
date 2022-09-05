@@ -83,10 +83,10 @@ pipeline {
             sh "aws ecr get-login-password --region eu-west-1 | \
                 docker login --username AWS --password-stdin ${ECR_URL}"
 
-            sh "docker tag backend:latest ${ECR_URL}/${REPO_NAME}:backend-${NEXT_TAG}"
+            sh "docker tag task-scrape-back:latest ${ECR_URL}/${REPO_NAME}:backend-${NEXT_TAG}"
             sh "docker push ${ECR_URL}/${REPO_NAME}:backend-${NEXT_TAG}"
 
-            sh "docker tag frontend:latest ${ECR_URL}/${REPO_NAME}:frontend-${NEXT_TAG}"
+            sh "docker tag task-scrape-front:latest ${ECR_URL}/${REPO_NAME}:frontend-${NEXT_TAG}"
             sh "docker push ${ECR_URL}/${REPO_NAME}:frontend-${NEXT_TAG}"
            }
         }
