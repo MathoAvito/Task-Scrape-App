@@ -31,26 +31,26 @@ pipeline {
             sh 'docker network create test-network || true'
             sh "docker network connect test-network ${HOSTNAME}" //  connect Jenkin's container to the test network
             sh "docker-compose -f docker-compose-test.yaml up -d --build"
-            // sh '''#!/bin/bash
-            //     COUNT=0
-            //     until $(curl --output /dev/null --silent --head --fail http://frontend); do
-            //       COUNT=$((COUNT + 1))
-            //       sleep 5
-            //       if [[ COUNT -eq 10 ]]; then
-            //          echo "test failed, exit ..."
-            //          echo "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-----LOGS----*-*-*-*-*-*-*-*-*-*-*-*-*-*-*"
-            //          echo "\n=======================\nFRONTEND\n======================="
-            //          docker logs task-scrape-front
-            //          echo "===========================================================\n"
-            //          echo "\n=======================\nBACKEND\n======================="
-            //          docker logs task-scrape-back
-            //          echo "==========================================================="
-            //          exit 1
-            //       fi
-            //     done
-            //     '''
-                // make 10 tries to curl, check that the app is running.
-                // if it fails, print the logs of the two containers (front&back)
+            sh '''#!/bin/bash
+                COUNT=0
+                until $(curl --output /dev/null --silent --head --fail http://frontend); do
+                  COUNT=$((COUNT + 1))
+                  sleep 5
+                  if [[ COUNT -eq 10 ]]; then
+                     echo "test failed, exit ..."
+                     echo "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-----LOGS----*-*-*-*-*-*-*-*-*-*-*-*-*-*-*"
+                     echo "\n=======================\nFRONTEND\n======================="
+                     docker logs task-scrape-front
+                     echo "===========================================================\n"
+                     echo "\n=======================\nBACKEND\n======================="
+                     docker logs task-scrape-back
+                     echo "==========================================================="
+                     exit 1
+                  fi
+                done
+                '''
+               //  make 10 tries to curl, check that the app is running.
+               //  if it fails, print the logs of the two containers (front&back)
 
             cleanWs() // Remove working directory as we need to clone and modify infrastructure repo
          }
