@@ -1,4 +1,4 @@
-FROM python:3.10 as base
+FROM python:3.10
 
 COPY . /app
 
@@ -8,12 +8,6 @@ RUN pip install --upgrade pip
 
 RUN pip install --no-cache -r requirements.txt
 
-FROM base as final
-
-COPY --from=base app app
-
-WORKDIR /app
-
-ENTRYPOINT [ "python" ]
+ENTRYPOINT [ "python3" ]
 
 CMD ["main.py" ]
