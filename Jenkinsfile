@@ -22,7 +22,7 @@ pipeline {
          }
       }
 
-      stage ('test') {
+      stage ('test') { //unit test
          steps {
             echo "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*"
             echo "*-*-*-*-*-*-*-*-*-*-*-*   Test   *-*-*-*-*-*-*-*-*-*-*-*-*-*-"
@@ -91,7 +91,7 @@ pipeline {
            }
         }
       }
-
+ 
       stage('push changes to infra repo') { // Changing the tag of the app's helm chart. Triggering CD 
          when { expression { env.GIT_BRANCH == 'main' } }
          steps {
