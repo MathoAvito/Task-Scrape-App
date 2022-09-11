@@ -52,6 +52,7 @@ pipeline {
                   fi
                 done
                 '''
+                
                //  make 10 tries to curl, check that the app is running.
                //  if it fails, print the logs of the two containers (front&back)
 
