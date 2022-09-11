@@ -22,15 +22,18 @@ pipeline {
          }
       }
 
-      stage ('test') { //unit test
+      stage ('Test') { //unit test
          steps {
             echo "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*"
             echo "*-*-*-*-*-*-*-*-*-*-*-*   Test   *-*-*-*-*-*-*-*-*-*-*-*-*-*-"
             echo "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*"
 
-            sh 'docker network create test-network || true'
-            sh "docker network connect test-network ${HOSTNAME}" //  connect Jenkin's container to the test network
-            sh "docker-compose -f docker-compose-test.yaml up -d --build"
+            sh '''
+            docker network create test-network || true
+            docker network connect test-network ${HOSTNAME}
+            docker-compose -f docker-compose-test.yaml up -d --build
+               '''
+
             sh '''#!/bin/bash
                 COUNT=0
                 until $(curl --output /dev/null --silent --head --fail http://frontend); do
@@ -56,6 +59,25 @@ pipeline {
          }
       }
 
+
+
+      stage('Publish to ECR') {
+        when { expression { env.GIT_BRANCH == 'main' } }
+        steps {
+          script {
+            sh "aws ecr get-login-password --region eu-west-1 | \
+                docker login --username AWS --password-stdin ${ECR_URL}"
+
+            sh "docker tag task-scrape-back:latest ${ECR_URL}/${REPO_NAME}:backend-${NEXT_TAG}"
+            sh "docker push ${ECR_URL}/${REPO_NAME}:backend-${NEXT_TAG}"
+
+            sh "docker tag task-scrape-front:latest ${ECR_URL}/${REPO_NAME}:frontend-${NEXT_TAG}"
+            sh "docker push ${ECR_URL}/${REPO_NAME}:frontend-${NEXT_TAG}"
+           }
+        }
+      }
+
+
       stage('Cloning infra repo') {
          when { expression { env.GIT_BRANCH == 'main' } }
          steps {
@@ -76,21 +98,7 @@ pipeline {
          }
       }
 
-      stage('Publish to ECR') {
-        when { expression { env.GIT_BRANCH == 'main' } }
-        steps {
-          script {
-            sh "aws ecr get-login-password --region eu-west-1 | \
-                docker login --username AWS --password-stdin ${ECR_URL}"
 
-            sh "docker tag task-scrape-back:latest ${ECR_URL}/${REPO_NAME}:backend-${NEXT_TAG}"
-            sh "docker push ${ECR_URL}/${REPO_NAME}:backend-${NEXT_TAG}"
-
-            sh "docker tag task-scrape-front:latest ${ECR_URL}/${REPO_NAME}:frontend-${NEXT_TAG}"
-            sh "docker push ${ECR_URL}/${REPO_NAME}:frontend-${NEXT_TAG}"
-           }
-        }
-      }
  
       stage('push changes to infra repo') { // Changing the tag of the app's helm chart. Triggering CD 
          when { expression { env.GIT_BRANCH == 'main' } }
