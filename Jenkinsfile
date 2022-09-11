@@ -32,7 +32,7 @@ pipeline {
             docker network create test-network || true
             docker network connect test-network ${HOSTNAME}
             docker-compose -f docker-compose-test.yaml up -d --build
-               '''
+            '''
 
             sh '''#!/bin/bash
                 COUNT=0
@@ -51,33 +51,13 @@ pipeline {
                      exit 1
                   fi
                 done
-                '''
-                
+               '''
                //  make 10 tries to curl, check that the app is running.
                //  if it fails, print the logs of the two containers (front&back)
 
             cleanWs() // Remove working directory as we need to clone and modify infrastructure repo
          }
       }
-
-
-
-      stage('Publish to ECR') {
-        when { expression { env.GIT_BRANCH == 'main' } }
-        steps {
-          script {
-            sh "aws ecr get-login-password --region eu-west-1 | \
-                docker login --username AWS --password-stdin ${ECR_URL}"
-
-            sh "docker tag task-scrape-back:latest ${ECR_URL}/${REPO_NAME}:backend-${NEXT_TAG}"
-            sh "docker push ${ECR_URL}/${REPO_NAME}:backend-${NEXT_TAG}"
-
-            sh "docker tag task-scrape-front:latest ${ECR_URL}/${REPO_NAME}:frontend-${NEXT_TAG}"
-            sh "docker push ${ECR_URL}/${REPO_NAME}:frontend-${NEXT_TAG}"
-           }
-        }
-      }
-
 
       stage('Cloning infra repo') {
          when { expression { env.GIT_BRANCH == 'main' } }
@@ -99,7 +79,21 @@ pipeline {
          }
       }
 
+      stage('Publish to ECR') {
+        when { expression { env.GIT_BRANCH == 'main' } }
+        steps {
+          script {
+            sh "aws ecr get-login-password --region eu-west-1 | \
+                docker login --username AWS --password-stdin ${ECR_URL}"
 
+            sh "docker tag task-scrape-back:latest ${ECR_URL}/${REPO_NAME}:backend-${NEXT_TAG}"
+            sh "docker push ${ECR_URL}/${REPO_NAME}:backend-${NEXT_TAG}"
+
+            sh "docker tag task-scrape-front:latest ${ECR_URL}/${REPO_NAME}:frontend-${NEXT_TAG}"
+            sh "docker push ${ECR_URL}/${REPO_NAME}:frontend-${NEXT_TAG}"
+           }
+        }
+      }
  
       stage('push changes to infra repo') { // Changing the tag of the app's helm chart. Triggering CD 
          when { expression { env.GIT_BRANCH == 'main' } }
