@@ -28,7 +28,7 @@ The app is running on port 80 on your local machine.
 
 
 ### Sign-up
-![task-scrape-signup.png](https://i.postimg.cc/PJ6zsG85/task-scrape-signup.png)](https://postimg.cc/vxV6fNzJ)  
+[![task-scrape-signup.png](https://i.postimg.cc/PJ6zsG85/task-scrape-signup.png)](https://postimg.cc/vxV6fNzJ)  
 
 
 ### Dashboard
