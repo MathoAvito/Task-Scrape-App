@@ -1,16 +1,14 @@
+<img src="RM_im/Flask-docker-icon.png" align="right" />
 # Task Scrape App
 Hey there! I built and dockerized this app as my portfolio for a DevOps Bootcamp that I finished.  
 This app is a part of the CI/CD pipeline of my portfolio.  
 [Architecture](https://github.com/MathoAvito/Task-Scrape-App/blob/main/CI&CD_architecture.png)  
 
-<img src="RM_im/Flask-docker-icon.png" align="right" />
-
+<img src="RM_im/3d.png" align="right" />
 ## About
 The app's purpose is to write simple notes. (for now!)  
 It has user management logic, based on [mysql](https://www.mysql.com/) db and [SQLAlchemy](https://www.sqlalchemy.org/) tool.  
 Soon the app would be able to make web scraping, search for 3D printing files, and other 3D printing-related tools. Stay tuned!
-
-<img src="RM_im/3d.png" align="right" />
 
 ## Installation
 <sub><sup>Clone the repo</sup></sub>  
